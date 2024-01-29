@@ -10,7 +10,6 @@ import sys
 import serial.tools.list_ports
 import serial
 import os
-import time
 
 
 # поиск портов
@@ -19,7 +18,6 @@ def f_find_ports():
     for port in ports:
         print(port.device)
     return ports
-
 
 
 class Signals(QObject):
@@ -76,43 +74,10 @@ class Proga(QMainWindow, Ui_mainWindow):
 
             worker = Worker(self.send_to_port, configr, ser, file_path, chosen_port)
             self.threadpool.start(worker)
-            # output_buffer = ser.read(20)
-            # print(output_buffer)
-            # print('meow')
-
         except serial.SerialException as se:
             print("Serial port error:", str(se))
         except KeyboardInterrupt:
             pass
-
-        # except serial.SerialException as se:
-        #     print("Serial port error:", str(se))
-        #
-        # except KeyboardInterrupt:
-        #     pass
-        # try:
-        #     # Open the COM port
-        #     ser = serial.Serial(port=chosen_port, baudrate=9600, bytesize=8, stopbits=serial.STOPBITS_ONE,
-        #                         timeout=4.0)  # default serial settings
-        #     print("Serial connection established.")
-        #
-        #     transmitted_bits = 0
-        #
-        #     # Read data from the Arduino
-        #
-        #     ser.write(b'hello')
-        #         # Send the command to the Arduino
-        #         # ser.write(configr)
-        #
-        # except serial.SerialException as se:
-        #     print("Serial port error:", str(se))
-        # except KeyboardInterrupt:
-        #     pass
-        # finally:
-        #     # Close the serial connection
-        #     if ser.is_open:
-        #         ser.close()
-        #         print("Serial connection closed.")
 
     def send_to_port(self, configr, ser, file_path, choosen_port):
         total_bytes = len(configr)  # Общее количество байт в файле
@@ -135,6 +100,7 @@ class Proga(QMainWindow, Ui_mainWindow):
             ser.close()
             print("Serial connection closed.")
 
+
 class Worker(QRunnable):
     def __init__(self, fn, *args, **kwargs):
         super(Worker, self).__init__()
@@ -147,10 +113,9 @@ class Worker(QRunnable):
         # Retrieve args/kwargs here; and fire processing using them
         self.fn(*self.args, **self.kwargs)
 
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = Proga()
     window.show()
     sys.exit(app.exec())
-
-
