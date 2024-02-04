@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import QMainWindow, QApplication
 from ui_main import Ui_mainWindow
-from ui_progressbar import Ui_Dialog
+from windows import main_window, port_window, progress_window
+from ui_port_settings import Ui_Dialog
 
 import pandas as pd
 from PyQt6 import QtWidgets
@@ -20,6 +21,12 @@ def f_find_ports():
     return ports
 
 
+class PortWindow(QMainWindow, Ui_Dialog):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+
+
 class Signals(QObject):
     sent_to_port_finished = pyqtSignal(str, str, serial.Serial)
     sent_to_port_in_progress = pyqtSignal(int, int)
@@ -33,27 +40,50 @@ class Proga(QMainWindow, Ui_mainWindow):
         self.setupUi(self)
         self.Button_download.clicked.connect(self.f_json_to_excel)  # кнопка открытия файла и преобр в эксель
         usb = f_find_ports()  # поиск портов
-        self.comboBox_ports.addItems([port.device for port in usb])  # добавление портов в список
+        #self.comboBox_ports.addItems([port.device for port in usb])  # добавление портов в список
         self.Button_send.clicked.connect(self.f_save_file)
         self.threadpool = QThreadPool()
         self.signals = Signals()
         self.signals.sent_to_port_finished.connect(self.sending_finished)
         self.signals.sent_to_port_in_progress.connect(self.print_sent_bytes)
 
-    # открытие файла и преобразование его в эксель
+        self.But_settings_ports.clicked.connect(self.change_port_settings)
+        self.portWindow = PortWindow()
+
+        self.portWindow.backButton.clicked.connect(self.back_to_mainwindow())
+
+        # открытие файла и преобразование его в эксель
     def f_json_to_excel(self):
-        with open(QtWidgets.QFileDialog.getOpenFileName(
-                None,
-                'Open File', './',
-                'Files (*.json)')[0], 'r') as file:
-            print(file)
-            data = json.load(file)
+        print('hi')
+        # # выводит выбранный порт
+        # chosen_port = self.comboBox_ports.currentText()
+        # print(chosen_port)
+        # # происходит чтение из файла и преобразование в эксель
+        # try:
+        #     ser = serial.Serial(port=chosen_port, baudrate=9600, bytesize=8, stopbits=serial.STOPBITS_ONE,
+        #                         timeout=4.0)
+        #
+        #     worker = Worker(self.send_to_port, configr, ser, file_path, chosen_port)
+        #     self.threadpool.start(worker)
+        # except serial.SerialException as se:
+        #     print("Serial port error:", str(se))
+        # except KeyboardInterrupt:
+        #     pass
+        #     data = json.load(file)
+        #
+        # df = pd.json_normalize(data)
+        # df.to_excel('data.xlsx', index=False)
+        # print('JSON data has been converted to Excel')
 
-        df = pd.json_normalize(data)
-        df.to_excel('data.xlsx', index=False)
-        print('JSON data has been converted to Excel')
+    def change_port_settings(self):
+        usb = f_find_ports()  # поиск портов
+        self.portWindow.comboBox_ports.addItems([port.device for port in usb])
+        self.portWindow.show()
+        self.hide()
 
-        ## добавить ошибку закрытия файла ##
+    def back_to_mainwindow(self):
+        self.show()
+        self.hide()
 
     def f_save_file(self):
         with open(QtWidgets.QFileDialog.getOpenFileName(
@@ -114,8 +144,8 @@ class Worker(QRunnable):
         self.fn(*self.args, **self.kwargs)
 
 
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = Proga()
-    window.show()
-    sys.exit(app.exec())
+# if __name__ == "__main__":
+#     app = QApplication(sys.argv)
+#     window = Proga()
+#     window.show()
+#     sys.exit(app.exec())

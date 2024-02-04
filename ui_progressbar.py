@@ -15,30 +15,48 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QDialog, QLabel, QProgressBar,
-    QSizePolicy, QWidget)
+from PySide6.QtWidgets import (QApplication, QDialog, QFrame, QLabel,
+    QProgressBar, QPushButton, QSizePolicy, QVBoxLayout,
+    QWidget)
 
-class Ui_Dialog(object):
-    def setupUi(self, Dialog):
-        if not Dialog.objectName():
-            Dialog.setObjectName(u"Dialog")
-        Dialog.resize(411, 83)
-        self.progress_ = QProgressBar(Dialog)
-        self.progress_.setObjectName(u"progress_")
-        self.progress_.setGeometry(QRect(22, 44, 371, 24))
-        self.progress_.setValue(0)
-        self.label = QLabel(Dialog)
+class Ui_progressWindow(object):
+    def setupUi(self, progressWindow):
+        if not progressWindow.objectName():
+            progressWindow.setObjectName(u"progressWindow")
+        progressWindow.resize(411, 110)
+        self.pushButton = QPushButton(progressWindow)
+        self.pushButton.setObjectName(u"pushButton")
+        self.pushButton.setGeometry(QRect(170, 70, 75, 24))
+        self.frame = QFrame(progressWindow)
+        self.frame.setObjectName(u"frame")
+        self.frame.setGeometry(QRect(20, 0, 371, 66))
+        self.frame.setFrameShape(QFrame.StyledPanel)
+        self.frame.setFrameShadow(QFrame.Raised)
+        self.verticalLayout = QVBoxLayout(self.frame)
+        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.label = QLabel(self.frame)
         self.label.setObjectName(u"label")
-        self.label.setGeometry(QRect(140, 22, 90, 16))
         self.label.setLayoutDirection(Qt.RightToLeft)
+        self.label.setAlignment(Qt.AlignCenter)
 
-        self.retranslateUi(Dialog)
+        self.verticalLayout.addWidget(self.label)
 
-        QMetaObject.connectSlotsByName(Dialog)
+        self.progress_ = QProgressBar(self.frame)
+        self.progress_.setObjectName(u"progress_")
+        self.progress_.setValue(0)
+        self.progress_.setTextVisible(False)
+
+        self.verticalLayout.addWidget(self.progress_)
+
+
+        self.retranslateUi(progressWindow)
+
+        QMetaObject.connectSlotsByName(progressWindow)
     # setupUi
 
-    def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"\u0417\u0430\u0433\u0440\u0443\u0437\u043a\u0430", None))
-        self.label.setText(QCoreApplication.translate("Dialog", u"\u0417\u0430\u0433\u0440\u0443\u0437\u043a\u0430 \u0444\u0430\u0439\u043b\u0430", None))
+    def retranslateUi(self, progressWindow):
+        progressWindow.setWindowTitle(QCoreApplication.translate("progressWindow", u"\u0417\u0430\u0433\u0440\u0443\u0437\u043a\u0430", None))
+        self.pushButton.setText(QCoreApplication.translate("progressWindow", u"\u041e\u0442\u043c\u0435\u043d\u0430", None))
+        self.label.setText(QCoreApplication.translate("progressWindow", u"\u0417\u0430\u0433\u0440\u0443\u0437\u043a\u0430 \u0444\u0430\u0439\u043b\u0430", None))
     # retranslateUi
 
