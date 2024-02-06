@@ -48,5 +48,6 @@ class PortWindow(QWidget):
         self.ui.speed_bod.setCurrentIndex(4)
         self.ui.parity_check.setCurrentIndex(0)
         self.ui.stop_bits.setCurrentIndex(0)
+        self.ui.flow_control.setCurrentIndex(0)
 
 
