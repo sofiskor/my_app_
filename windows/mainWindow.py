@@ -84,14 +84,20 @@ class Proga(QMainWindow):
         chosen_stopbits_rus = self.portWindow.ui.stop_bits.currentText()
         chosen_stopbits = self.portWindow.STOPBITS.get(chosen_stopbits_rus)
 
-        print(chosen_parity)
-        print(chosen_stopbits)
-        print(file_size)
-        print(chosen_port)
+        chosen_flowcontrol = self.portWindow.ui.flow_control.currentText()
+        if chosen_flowcontrol == "Аппаратное":
+            ch_xonooff = False
+            ch_rtscts = True
+        elif chosen_flowcontrol == "Программное":
+            ch_xonooff = True
+            ch_rtscts = False
+        else:
+            ch_xonooff = False
+            ch_rtscts = False
 
         try:
-            ser = serial.Serial(port=chosen_port, baudrate=chosen_speed, bytesize=8, stopbits=serial.STOPBITS_ONE,
-                                timeout=4.0)
+            ser = serial.Serial(port=chosen_port, baudrate=chosen_speed, parity=chosen_parity, stopbits=chosen_stopbits,
+                                timeout=4.0, xonxoff=ch_xonooff, rtscts=ch_rtscts)
 
             worker = Worker(self.send_to_port, configr, ser, file_path, chosen_port)
             self.threadpool.start(worker)
@@ -100,7 +106,7 @@ class Proga(QMainWindow):
         except KeyboardInterrupt:
             pass
 
-        self.progressWindow.ui.stopButton.clicked.connect(self.progressWindow.stop_process)
+        # self.progressWindow.ui.stopButton.clicked.connect(self.progressWindow.stop_process)
 
     def send_to_port(self, configr, ser, file_path, choosen_port):
         total_bytes = len(configr)  # Общее количество байт в файле

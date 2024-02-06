@@ -16,17 +16,17 @@ def f_find_ports():
 
 class PortWindow(QWidget):
     PARITY = {
-        "нет": "PARITY_NONE",
-        "чет": "PARITY_EVEN",
-        "нечет": "PARITY_ODD",
-        "маркер": "PARITY_MARK",
-        "пробел": "PARITY_SPACE"
+        "нет": serial.PARITY_NONE,
+        "чет": serial.PARITY_EVEN,
+        "нечет": serial.PARITY_ODD,
+        "маркер": serial.PARITY_MARK,
+        "пробел": serial.PARITY_SPACE
     }
 
     STOPBITS = {
-        "1": "STOPBITS_ONE",
-        "1,5": "STOPBITS_ONE_POINT_FIVE",
-        "2": "STOPBITS_TWO"
+        "1": serial.STOPBITS_ONE,
+        "1,5": serial.STOPBITS_ONE_POINT_FIVE,
+        "2": serial.STOPBITS_TWO
     }
     SPEED = ["1200", "1800", "2400", "4800", "9600", "19200", "38400", "57600", "115200"]
 

@@ -10,7 +10,7 @@ class ProgressWindow(QWidget):
         self.ui.setupUi(self)
         # self.ui.stopButton.clicked.connect()
 
-    def stop_process(self, ser):
-        if ser.is_open:
-            ser.close()
-            print("Serial connection closed.")
+    # def stop_process(self, ser):
+    #     if ser.is_open:
+    #         ser.close()
+    #         print("Serial connection closed.")
