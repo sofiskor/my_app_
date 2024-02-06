@@ -1,58 +1,43 @@
-from PySide6.QtWidgets import QMainWindow, QApplication
-from ui_main import Ui_mainWindow
-from windows import main_window, port_window, progress_window
-from ui_port_settings import Ui_Dialog
-
-import pandas as pd
-from PyQt6 import QtWidgets
-from PyQt6.QtCore import pyqtSignal, QRunnable, QObject, pyqtSlot, QThreadPool
-import json
-import sys
-import serial.tools.list_ports
-import serial
 import os
 
+import serial
+from PySide6 import QtWidgets
+from PySide6.QtCore import QObject, Signal, QThreadPool, QRunnable, Slot
+from PySide6.QtWidgets import QMainWindow
+from .progress import ProgressWindow
+from .port import PortWindow
 
-# поиск портов
-def f_find_ports():
-    ports = serial.tools.list_ports.comports()
-    for port in ports:
-        print(port.device)
-    return ports
-
-
-class PortWindow(QMainWindow, Ui_Dialog):
-    def __init__(self):
-        super().__init__()
-        self.setupUi(self)
+from ui_main import Ui_mainWindow
 
 
 class Signals(QObject):
-    sent_to_port_finished = pyqtSignal(str, str, serial.Serial)
-    sent_to_port_in_progress = pyqtSignal(int, int)
+    sent_to_port_finished = Signal(str, str, serial.Serial)
+    sent_to_port_in_progress = Signal(int, int)
 
 
-class Proga(QMainWindow, Ui_mainWindow):
+class Proga(QMainWindow):
     def __init__(self):
         # Инициализация родительского класса
-        QMainWindow.__init__(self)
+        super(Proga, self).__init__()
 
-        self.setupUi(self)
-        self.Button_download.clicked.connect(self.f_json_to_excel)  # кнопка открытия файла и преобр в эксель
-        usb = f_find_ports()  # поиск портов
-        #self.comboBox_ports.addItems([port.device for port in usb])  # добавление портов в список
-        self.Button_send.clicked.connect(self.f_save_file)
+        self.ui = Ui_mainWindow()
+        self.ui.setupUi(self)
+        self.ui.Button_download.clicked.connect(self.f_json_to_excel)  # кнопка открытия файла и преобр в эксель
+        # self.comboBox_ports.addItems([port.device for port in usb])  # добавление портов в список
+        self.progressWindow = ProgressWindow()
+        self.ui.Button_send.clicked.connect(self.f_save_file)
         self.threadpool = QThreadPool()
         self.signals = Signals()
         self.signals.sent_to_port_finished.connect(self.sending_finished)
         self.signals.sent_to_port_in_progress.connect(self.print_sent_bytes)
 
-        self.But_settings_ports.clicked.connect(self.change_port_settings)
+        self.ui.But_settings_ports.clicked.connect(self.hide)
+        self.ui.But_settings_ports.clicked.connect(self.change_port_settings)
         self.portWindow = PortWindow()
-
-        self.portWindow.backButton.clicked.connect(self.back_to_mainwindow())
+        self.portWindow.ui.backButton.clicked.connect(self.show)
 
         # открытие файла и преобразование его в эксель
+
     def f_json_to_excel(self):
         print('hi')
         # # выводит выбранный порт
@@ -76,16 +61,11 @@ class Proga(QMainWindow, Ui_mainWindow):
         # print('JSON data has been converted to Excel')
 
     def change_port_settings(self):
-        usb = f_find_ports()  # поиск портов
-        self.portWindow.comboBox_ports.addItems([port.device for port in usb])
         self.portWindow.show()
         self.hide()
 
-    def back_to_mainwindow(self):
-        self.show()
-        self.hide()
-
     def f_save_file(self):
+
         with open(QtWidgets.QFileDialog.getOpenFileName(
                 None,
                 'Open File', './',
@@ -94,12 +74,23 @@ class Proga(QMainWindow, Ui_mainWindow):
             file_path = file.name
             file_size = os.path.getsize(file_path)
 
-        chosen_port = self.comboBox_ports.currentText()
+        chosen_port = self.portWindow.ui.comboBox_ports.currentText()
+
+        chosen_speed = int(self.portWindow.ui.speed_bod.currentText())
+
+        chosen_parity_rus = self.portWindow.ui.parity_check.currentText()
+        chosen_parity = self.portWindow.PARITY.get(chosen_parity_rus)
+
+        chosen_stopbits_rus = self.portWindow.ui.stop_bits.currentText()
+        chosen_stopbits = self.portWindow.STOPBITS.get(chosen_stopbits_rus)
+
+        print(chosen_parity)
+        print(chosen_stopbits)
         print(file_size)
         print(chosen_port)
 
         try:
-            ser = serial.Serial(port=chosen_port, baudrate=9600, bytesize=8, stopbits=serial.STOPBITS_ONE,
+            ser = serial.Serial(port=chosen_port, baudrate=chosen_speed, bytesize=8, stopbits=serial.STOPBITS_ONE,
                                 timeout=4.0)
 
             worker = Worker(self.send_to_port, configr, ser, file_path, chosen_port)
@@ -108,6 +99,8 @@ class Proga(QMainWindow, Ui_mainWindow):
             print("Serial port error:", str(se))
         except KeyboardInterrupt:
             pass
+
+        self.progressWindow.ui.stopButton.clicked.connect(self.progressWindow.stop_process)
 
     def send_to_port(self, configr, ser, file_path, choosen_port):
         total_bytes = len(configr)  # Общее количество байт в файле
@@ -122,7 +115,8 @@ class Proga(QMainWindow, Ui_mainWindow):
 
     def print_sent_bytes(self, sent, total):
         print(f"Отправлено {sent} из {total} байт")
-        self.progressBar.setValue(sent / total * 100)
+        self.progressWindow.show()
+        self.progressWindow.ui.progress.setValue(sent / total * 100)
 
     def sending_finished(self, file_path, chosen_port, ser):
         print(f"File {file_path} sent to COM port {chosen_port} successfully.")
@@ -138,14 +132,7 @@ class Worker(QRunnable):
         self.args = args
         self.kwargs = kwargs
 
-    @pyqtSlot()
+    @Slot()
     def run(self):
         # Retrieve args/kwargs here; and fire processing using them
         self.fn(*self.args, **self.kwargs)
-
-
-# if __name__ == "__main__":
-#     app = QApplication(sys.argv)
-#     window = Proga()
-#     window.show()
-#     sys.exit(app.exec())

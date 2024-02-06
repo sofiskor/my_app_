@@ -24,9 +24,9 @@ class Ui_progressWindow(object):
         if not progressWindow.objectName():
             progressWindow.setObjectName(u"progressWindow")
         progressWindow.resize(411, 110)
-        self.pushButton = QPushButton(progressWindow)
-        self.pushButton.setObjectName(u"pushButton")
-        self.pushButton.setGeometry(QRect(170, 70, 75, 24))
+        self.stopButton = QPushButton(progressWindow)
+        self.stopButton.setObjectName(u"stopButton")
+        self.stopButton.setGeometry(QRect(170, 70, 75, 24))
         self.frame = QFrame(progressWindow)
         self.frame.setObjectName(u"frame")
         self.frame.setGeometry(QRect(20, 0, 371, 66))
@@ -41,12 +41,12 @@ class Ui_progressWindow(object):
 
         self.verticalLayout.addWidget(self.label)
 
-        self.progress_ = QProgressBar(self.frame)
-        self.progress_.setObjectName(u"progress_")
-        self.progress_.setValue(0)
-        self.progress_.setTextVisible(False)
+        self.progress = QProgressBar(self.frame)
+        self.progress.setObjectName(u"progress")
+        self.progress.setValue(0)
+        self.progress.setTextVisible(False)
 
-        self.verticalLayout.addWidget(self.progress_)
+        self.verticalLayout.addWidget(self.progress)
 
 
         self.retranslateUi(progressWindow)
@@ -56,7 +56,7 @@ class Ui_progressWindow(object):
 
     def retranslateUi(self, progressWindow):
         progressWindow.setWindowTitle(QCoreApplication.translate("progressWindow", u"\u0417\u0430\u0433\u0440\u0443\u0437\u043a\u0430", None))
-        self.pushButton.setText(QCoreApplication.translate("progressWindow", u"\u041e\u0442\u043c\u0435\u043d\u0430", None))
+        self.stopButton.setText(QCoreApplication.translate("progressWindow", u"\u041e\u0442\u043c\u0435\u043d\u0430", None))
         self.label.setText(QCoreApplication.translate("progressWindow", u"\u0417\u0430\u0433\u0440\u0443\u0437\u043a\u0430 \u0444\u0430\u0439\u043b\u0430", None))
     # retranslateUi
 
