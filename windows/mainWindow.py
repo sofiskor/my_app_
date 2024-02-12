@@ -11,11 +11,13 @@ from ui_main import Ui_mainWindow
 
 
 class Signals(QObject):
-    sent_to_port_finished = Signal(str, str, serial.Serial)
+    sent_to_port_finished = Signal(str, str, int, int, serial.Serial)
     sent_to_port_in_progress = Signal(int, int)
 
 
 class Proga(QMainWindow):
+    cancel_send_flag = False
+
     def __init__(self):
         # Инициализация родительского класса
         super(Proga, self).__init__()
@@ -26,6 +28,7 @@ class Proga(QMainWindow):
         # self.comboBox_ports.addItems([port.device for port in usb])  # добавление портов в список
         self.progressWindow = ProgressWindow()
         self.ui.Button_send.clicked.connect(self.f_save_file)
+        self.progressWindow.ui.stopButton.clicked.connect(self.stop_sending)
         self.threadpool = QThreadPool()
         self.signals = Signals()
         self.signals.sent_to_port_finished.connect(self.sending_finished)
@@ -60,12 +63,14 @@ class Proga(QMainWindow):
         # df.to_excel('data.xlsx', index=False)
         # print('JSON data has been converted to Excel')
 
+    # показывает окно "настройка порта"
     def change_port_settings(self):
         self.portWindow.show()
         self.hide()
 
+    # отправляет файл при нажатии кнопки "загрузить"
     def f_save_file(self):
-
+        # открываем файл с прошивкой
         with open(QtWidgets.QFileDialog.getOpenFileName(
                 None,
                 'Open File', './',
@@ -74,17 +79,14 @@ class Proga(QMainWindow):
             file_path = file.name
             file_size = os.path.getsize(file_path)
 
-        chosen_port = self.portWindow.ui.comboBox_ports.currentText()
-
-        chosen_speed = int(self.portWindow.ui.speed_bod.currentText())
-
+        chosen_port = self.portWindow.ui.comboBox_ports.currentText()  # выбранный порт
+        chosen_speed = int(self.portWindow.ui.speed_bod.currentText())  # выбранная скорость
         chosen_parity_rus = self.portWindow.ui.parity_check.currentText()
-        chosen_parity = self.portWindow.PARITY.get(chosen_parity_rus)
-
+        chosen_parity = self.portWindow.PARITY.get(chosen_parity_rus)  # выбранная четность
         chosen_stopbits_rus = self.portWindow.ui.stop_bits.currentText()
-        chosen_stopbits = self.portWindow.STOPBITS.get(chosen_stopbits_rus)
-
+        chosen_stopbits = self.portWindow.STOPBITS.get(chosen_stopbits_rus)  # выбранный стопбит
         chosen_flowcontrol = self.portWindow.ui.flow_control.currentText()
+        # определенние контроля порта
         if chosen_flowcontrol == "Аппаратное":
             ch_xonooff = False
             ch_rtscts = True
@@ -94,7 +96,7 @@ class Proga(QMainWindow):
         else:
             ch_xonooff = False
             ch_rtscts = False
-
+        # открытие порта
         try:
             ser = serial.Serial(port=chosen_port, baudrate=chosen_speed, parity=chosen_parity, stopbits=chosen_stopbits,
                                 timeout=4.0, xonxoff=ch_xonooff, rtscts=ch_rtscts)
@@ -106,26 +108,30 @@ class Proga(QMainWindow):
         except KeyboardInterrupt:
             pass
 
-        # self.progressWindow.ui.stopButton.clicked.connect(self.progressWindow.stop_process)
-
     def send_to_port(self, configr, ser, file_path, choosen_port):
         total_bytes = len(configr)  # Общее количество байт в файле
         bytes_sent = 0  # Инициализируем счетчик переданных байт
-
-        while bytes_sent < total_bytes:
+        while not self.cancel_send_flag and bytes_sent < total_bytes:
             bytes_to_send = min(100, total_bytes - bytes_sent)  # Определяем количество байт для отправки
             sent = ser.write(configr[bytes_sent:bytes_sent + bytes_to_send])  # Отправляем данные
             bytes_sent += sent  # Обновляем счетчик переданных байт
             self.signals.sent_to_port_in_progress.emit(bytes_sent, total_bytes)
-        self.signals.sent_to_port_finished.emit(file_path, choosen_port, ser)
+        self.signals.sent_to_port_finished.emit(file_path, choosen_port, bytes_sent, total_bytes, ser)
+
+    def stop_sending(self):
+        self.cancel_send_flag = True
 
     def print_sent_bytes(self, sent, total):
         print(f"Отправлено {sent} из {total} байт")
         self.progressWindow.show()
         self.progressWindow.ui.progress.setValue(sent / total * 100)
 
-    def sending_finished(self, file_path, chosen_port, ser):
-        print(f"File {file_path} sent to COM port {chosen_port} successfully.")
+    def sending_finished(self, file_path, chosen_port, bytes_sent, total_bytes, ser):
+        if bytes_sent == total_bytes:
+            print(f"File {file_path} sent to COM port {chosen_port} successfully.")
+        else:
+            print("stopped by user")
+            self.progressWindow.close()
         if ser.is_open:
             ser.close()
             print("Serial connection closed.")
