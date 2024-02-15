@@ -23,10 +23,10 @@ class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(291, 326)
+        Dialog.resize(275, 330)
         self.frame_6 = QFrame(Dialog)
         self.frame_6.setObjectName(u"frame_6")
-        self.frame_6.setGeometry(QRect(0, 0, 291, 281))
+        self.frame_6.setGeometry(QRect(-10, 0, 291, 281))
         self.frame_6.setMinimumSize(QSize(241, 230))
         self.frame_6.setFrameShape(QFrame.StyledPanel)
         self.frame_6.setFrameShadow(QFrame.Raised)
@@ -44,7 +44,6 @@ class Ui_Dialog(object):
         self.horizontalLayout_2.addWidget(self.label_comboBox_ports)
 
         self.comboBox_ports = QComboBox(self.frame_3)
-        self.comboBox_ports.addItem("")
         self.comboBox_ports.setObjectName(u"comboBox_ports")
 
         self.horizontalLayout_2.addWidget(self.comboBox_ports)
@@ -108,6 +107,8 @@ class Ui_Dialog(object):
 
         self.horizontalLayout_4.addWidget(self.stop_bits)
 
+        self.horizontalLayout_4.setStretch(0, 1)
+        self.horizontalLayout_4.setStretch(1, 1)
 
         self.verticalLayout_2.addWidget(self.frame)
 
@@ -166,8 +167,6 @@ class Ui_Dialog(object):
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0430 \u043f\u043e\u0440\u0442\u0430", None))
         self.label_comboBox_ports.setText(QCoreApplication.translate("Dialog", u"\u0412\u044b\u0431\u0440\u0430\u0442\u044c \u043f\u043e\u0440\u0442:", None))
-        self.comboBox_ports.setItemText(0, "")
-
 #if QT_CONFIG(whatsthis)
         self.comboBox_ports.setWhatsThis(QCoreApplication.translate("Dialog", u"<html><head/><body><p>\u041e\u0442\u043e\u0431\u0440\u0430\u0436\u0430\u044e\u0442\u0441\u044f \u0442\u043e\u043b\u044c\u043a\u043e \u0434\u043e\u0441\u0442\u0443\u043f\u043d\u044b\u0435 \u043f\u043e\u0440\u0442\u044b</p><p><br/></p></body></html>", None))
 #endif // QT_CONFIG(whatsthis)

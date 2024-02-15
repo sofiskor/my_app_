@@ -45,6 +45,7 @@ class PortWindow(QWidget):
         self.ui.but_default.clicked.connect(self.default_settings)
 
     def default_settings(self):
+        self.ui.comboBox_ports.setCurrentIndex(1)
         self.ui.speed_bod.setCurrentIndex(4)
         self.ui.parity_check.setCurrentIndex(0)
         self.ui.stop_bits.setCurrentIndex(0)

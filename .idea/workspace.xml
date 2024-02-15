@@ -4,11 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="81db9717-0775-44d1-9d2a-ad802b443be3" name="Changes" comment="раскиданы классы по файлам,добавлены кнопки для настройки порта">
+    <list default="true" id="81db9717-0775-44d1-9d2a-ad802b443be3" name="Changes" comment="добавлен функционал в кнопку &quot;отмена&quot;">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/ui_main.ui" beforeDir="false" afterPath="$PROJECT_DIR$/ui/ui_main.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/ui_port_settings.ui" beforeDir="false" afterPath="$PROJECT_DIR$/ui/ui_port_settings.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/ui_main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_port_settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/ui_port_settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/windows/mainWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/windows/mainWindow.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/windows/port.py" beforeDir="false" afterPath="$PROJECT_DIR$/windows/port.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/windows/progress.py" beforeDir="false" afterPath="$PROJECT_DIR$/windows/progress.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -156,7 +159,31 @@
       <option name="project" value="LOCAL" />
       <updated>1707225683908</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="исправлены комбобоксы">
+      <option name="closed" value="true" />
+      <created>1707228973763</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1707228973763</updated>
+    </task>
+    <task id="LOCAL-00007" summary="/">
+      <option name="closed" value="true" />
+      <created>1707230099750</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1707230099750</updated>
+    </task>
+    <task id="LOCAL-00008" summary="добавлен функционал в кнопку &quot;отмена&quot;">
+      <option name="closed" value="true" />
+      <created>1707733493269</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1707733493269</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -175,6 +202,9 @@
     <MESSAGE value="." />
     <MESSAGE value="2nd menu adding" />
     <MESSAGE value="раскиданы классы по файлам,добавлены кнопки для настройки порта" />
-    <option name="LAST_COMMIT_MESSAGE" value="раскиданы классы по файлам,добавлены кнопки для настройки порта" />
+    <MESSAGE value="исправлены комбобоксы" />
+    <MESSAGE value="/" />
+    <MESSAGE value="добавлен функционал в кнопку &quot;отмена&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="добавлен функционал в кнопку &quot;отмена&quot;" />
   </component>
 </project>
