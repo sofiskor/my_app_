@@ -1,9 +1,12 @@
 import os
 
 import serial
+import logging
 from PySide6 import QtWidgets
 from PySide6.QtCore import QObject, Signal, QThreadPool, QRunnable, Slot
 from PySide6.QtWidgets import QMainWindow
+from serial.serialutil import SerialTimeoutException, PortNotOpenError
+
 from .progress import ProgressWindow
 from .port import PortWindow
 
@@ -70,6 +73,7 @@ class Proga(QMainWindow):
 
     # отправляет файл при нажатии кнопки "загрузить"
     def f_save_file(self):
+        self.cancel_send_flag = False
         # открываем файл с прошивкой
         with open(QtWidgets.QFileDialog.getOpenFileName(
                 None,
@@ -111,12 +115,22 @@ class Proga(QMainWindow):
     def send_to_port(self, configr, ser, file_path, choosen_port):
         total_bytes = len(configr)  # Общее количество байт в файле
         bytes_sent = 0  # Инициализируем счетчик переданных байт
+
         while not self.cancel_send_flag and bytes_sent < total_bytes:
             bytes_to_send = min(100, total_bytes - bytes_sent)  # Определяем количество байт для отправки
-            sent = ser.write(configr[bytes_sent:bytes_sent + bytes_to_send])  # Отправляем данные
-            bytes_sent += sent  # Обновляем счетчик переданных байт
-            self.signals.sent_to_port_in_progress.emit(bytes_sent, total_bytes)
+            try:
+                sent = ser.write(configr[bytes_sent:bytes_sent + bytes_to_send])  # Отправляем данные
+                bytes_sent += sent  # Обновляем счетчик переданных байт
+                self.signals.sent_to_port_in_progress.emit(bytes_sent, total_bytes)
+            except serial.SerialException as exc:
+                print(f"Произошла ошибка при работе с портом: {exc}")
+                if ser.is_open:
+                    ser.close()
+                    print("Serial connection closed.")
+                self.progressWindow.hide()
+                break
         self.signals.sent_to_port_finished.emit(file_path, choosen_port, bytes_sent, total_bytes, ser)
+
 
     def stop_sending(self):
         self.cancel_send_flag = True
@@ -130,7 +144,7 @@ class Proga(QMainWindow):
         if bytes_sent == total_bytes:
             print(f"File {file_path} sent to COM port {chosen_port} successfully.")
         else:
-            print("stopped by user")
+            print("File not sent")
             self.progressWindow.close()
         if ser.is_open:
             ser.close()
