@@ -10,12 +10,12 @@
     <x>0</x>
     <y>0</y>
     <width>260</width>
-    <height>398</height>
+    <height>392</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>240</width>
+    <width>260</width>
     <height>320</height>
    </size>
   </property>
@@ -48,53 +48,29 @@
      <property name="verticalSpacing">
       <number>10</number>
      </property>
+     <item row="0" column="0" colspan="2">
+      <widget class="QLabel" name="label_ports">
+       <property name="text">
+        <string>Port settings:</string>
+       </property>
+      </widget>
+     </item>
      <item row="1" column="0">
       <widget class="QPushButton" name="But_settings_ports">
        <property name="enabled">
         <bool>true</bool>
        </property>
        <property name="text">
-        <string>Настроить</string>
+        <string>Change</string>
        </property>
       </widget>
      </item>
      <item row="2" column="0">
       <widget class="QLabel" name="label_send">
        <property name="text">
-        <string>Загрузить прошивку:</string>
+        <string>Send firmware:</string>
        </property>
       </widget>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="label_download">
-       <property name="text">
-        <string>Выгрузить данные:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="0">
-      <widget class="QPushButton" name="Button_download">
-       <property name="text">
-        <string>Скачать</string>
-       </property>
-      </widget>
-     </item>
-     <item row="6" column="0">
-      <widget class="QLabel" name="label_table">
-       <property name="text">
-        <string>Полученные данные:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0" colspan="2">
-      <widget class="QLabel" name="label_ports">
-       <property name="text">
-        <string>Настроить порт:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="7" column="0" colspan="2">
-      <widget class="QTableWidget" name="tableWidget"/>
      </item>
      <item row="3" column="0">
       <widget class="QPushButton" name="Button_send">
@@ -102,7 +78,41 @@
         <bool>true</bool>
        </property>
        <property name="text">
-        <string>Загрузить </string>
+        <string>Send</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_download">
+       <property name="text">
+        <string>Save data:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QPushButton" name="Button_download">
+       <property name="text">
+        <string>Save</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0">
+      <widget class="QLabel" name="label_table">
+       <property name="text">
+        <string>Comments:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="0" colspan="2">
+      <widget class="QListWidget" name="comments">
+       <property name="minimumSize">
+        <size>
+         <width>221</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
        </property>
       </widget>
      </item>

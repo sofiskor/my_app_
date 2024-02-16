@@ -6,14 +6,17 @@ from PySide6.QtCore import QObject, Signal, QThreadPool, QRunnable, Slot
 from PySide6.QtWidgets import QMainWindow
 
 from .progress import ProgressWindow
-from .port import PortWindow
-
+from .port import PortWindow, UpdatePorts
 from ui_main import Ui_mainWindow
 
 
 class Signals(QObject):
     sent_to_port_finished = Signal(str, str, int, int, serial.Serial)
     sent_to_port_in_progress = Signal(int, int)
+
+
+class SignalOpenWindow(QObject):
+    window_opened = Signal(bool)
 
 
 class Proga(QMainWindow):
@@ -28,7 +31,7 @@ class Proga(QMainWindow):
         self.ui.Button_download.clicked.connect(self.f_json_to_excel)  # кнопка открытия файла и преобр в эксель
         # self.comboBox_ports.addItems([port.device for port in usb])  # добавление портов в список
         self.progressWindow = ProgressWindow()
-        self.ui.Button_send.clicked.connect(self.f_save_file)
+        self.ui.Button_send.clicked.connect(self.send_file)
         self.progressWindow.ui.stopButton.clicked.connect(self.stop_sending)
         self.threadpool = QThreadPool()
         self.signals = Signals()
@@ -36,8 +39,12 @@ class Proga(QMainWindow):
         self.signals.sent_to_port_in_progress.connect(self.print_sent_bytes)
 
         self.ui.But_settings_ports.clicked.connect(self.hide)
-        self.ui.But_settings_ports.clicked.connect(self.change_port_settings)
         self.portWindow = PortWindow()
+        self.ui.But_settings_ports.clicked.connect(self.change_port_settings)
+        self.updatePorts = UpdatePorts()
+        self.updatePorts.update_list_signal.connect(self.portWindow.update_comboBox)
+        self.ui.But_settings_ports.clicked.connect(self.updatePorts.update_list_signal)
+        # self.ui.But_settings_ports.clicked.connect(port_window.update_comboBox)
         self.portWindow.ui.backButton.clicked.connect(self.show)
 
         # открытие файла и преобразование его в эксель
@@ -65,12 +72,13 @@ class Proga(QMainWindow):
         # print('JSON data has been converted to Excel')
 
     # показывает окно "настройка порта"
-    def change_port_settings(self):
+    def change_port_settings(self, open_signal):
         self.portWindow.show()
+        open_signal = True
         self.hide()
 
     # отправляет файл при нажатии кнопки "загрузить"
-    def f_save_file(self):
+    def send_file(self):
         self.cancel_send_flag = False
         # открываем файл с прошивкой
         with open(QtWidgets.QFileDialog.getOpenFileName(
@@ -87,8 +95,8 @@ class Proga(QMainWindow):
         chosen_parity = self.portWindow.PARITY.get(chosen_parity_rus)  # выбранная четность
         chosen_stopbits_rus = self.portWindow.ui.stop_bits.currentText()
         chosen_stopbits = self.portWindow.STOPBITS.get(chosen_stopbits_rus)  # выбранный стопбит
-        chosen_bytesize_rus = self.portWindow.ui.stop_bits.currentText()
-        chosen_bytesize = self.portWindow.STOPBITS.get(chosen_stopbits_rus)  # выбранный стопбит
+        chosen_bytesize_rus = self.portWindow.ui.data_size.currentText()
+        chosen_bytesize = self.portWindow.BYTESIZE.get(chosen_bytesize_rus)  # выбранный стопбит
         chosen_flowcontrol = self.portWindow.ui.flow_control.currentText()
         # определенние контроля порта
         if chosen_flowcontrol == "RTS/CTS":
@@ -102,7 +110,7 @@ class Proga(QMainWindow):
             ch_rtscts = False
         # открытие порта
         try:
-            ser = serial.Serial(port=chosen_port, baudrate=chosen_speed, bytesize = chosen_bytesize,
+            ser = serial.Serial(port=chosen_port, baudrate=chosen_speed, bytesize=chosen_bytesize,
                                 parity=chosen_parity, stopbits=chosen_stopbits,
                                 timeout=4.0, xonxoff=ch_xonooff, rtscts=ch_rtscts)
 
@@ -127,10 +135,10 @@ class Proga(QMainWindow):
             except serial.SerialException as exc:
                 print(f"Произошла ошибка при работе с портом: {exc}")
                 self.progressWindow.hide()
+                self.ui.comments.addItem(f"Error: {exc}")
                 break
         # закрывает порт
         self.signals.sent_to_port_finished.emit(file_path, choosen_port, bytes_sent, total_bytes, ser)
-
 
     def stop_sending(self):
         self.cancel_send_flag = True
@@ -143,12 +151,16 @@ class Proga(QMainWindow):
     def sending_finished(self, file_path, chosen_port, bytes_sent, total_bytes, ser):
         if bytes_sent == total_bytes:
             print(f"File {file_path} sent to COM port {chosen_port} successfully.")
+            self.ui.comments.addItem(f"File {file_path} sent to COM port {chosen_port} successfully.")
+
         else:
             print("File not sent")
             self.progressWindow.close()
+            self.ui.comments.addItem("File not sent. Try again.")
         if ser.is_open:
             ser.close()
             print("Serial connection closed.")
+            self.progressWindow.close()
 
 
 class Worker(QRunnable):

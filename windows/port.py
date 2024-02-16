@@ -1,9 +1,9 @@
 import serial
+from PySide6.QtCore import Signal
 from PySide6.QtWidgets import QWidget
 import serial.tools.list_ports
 
 from ui_port_settings import Ui_Dialog
-
 
 
 # поиск портов
@@ -39,11 +39,16 @@ class PortWindow(QWidget):
 
     def __init__(self):
         super(PortWindow, self).__init__()
+        # self.signals_opened = Signal_open_window()
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
         self.ui.backButton.clicked.connect(self.hide)
         usb = f_find_ports()  # поиск портов
         self.ui.comboBox_ports.addItems([port.device for port in usb])
+        self.ui.comboBox_ports.activated.connect(self.update_comboBox)
+
+        self.ui.comboBox_ports.activated.connect(self.update_comboBox)
+
         self.ui.speed_bod.addItems(self.SPEED)
         self.ui.parity_check.addItems(self.PARITY.keys())
         self.ui.data_size.addItems(self.BYTESIZE.keys())
@@ -55,12 +60,28 @@ class PortWindow(QWidget):
         self.ui.speed_bod.setCurrentIndex(4)
         self.ui.data_size.setCurrentIndex(3)
 
-
     def default_settings(self):
         self.ui.speed_bod.setCurrentIndex(4)
         self.ui.data_size.setCurrentIndex(3)
         self.ui.parity_check.setCurrentIndex(0)
         self.ui.stop_bits.setCurrentIndex(0)
         self.ui.flow_control.setCurrentIndex(0)
+
+    def update_comboBox(self):
+        self.ui.comboBox_ports.clear()
+        # self.signals_opened.window_opened.emit()
+        usb = f_find_ports()
+        self.ui.comboBox_ports.addItems([port.device for port in usb])
+
+
+class UpdatePorts(QWidget):
+    update_list_signal= Signal()
+
+    def update_comboBox(self):
+        self.update_list_signal.emit()
+
+    # обновляет список портов, при изменнии порта
+
+
 
 
