@@ -9,8 +9,6 @@ from ui_port_settings import Ui_Dialog
 # поиск портов
 def f_find_ports():
     ports = serial.tools.list_ports.comports()
-    # for port in ports:
-    #     print(port.device)
     return ports
 
 
@@ -45,9 +43,6 @@ class PortWindow(QWidget):
         self.ui.backButton.clicked.connect(self.hide)
         usb = f_find_ports()  # поиск портов
         self.ui.comboBox_ports.addItems([port.device for port in usb])
-        self.ui.comboBox_ports.activated.connect(self.update_comboBox)
-
-        self.ui.comboBox_ports.activated.connect(self.update_comboBox)
 
         self.ui.speed_bod.addItems(self.SPEED)
         self.ui.parity_check.addItems(self.PARITY.keys())
@@ -69,18 +64,15 @@ class PortWindow(QWidget):
 
     def update_comboBox(self):
         self.ui.comboBox_ports.clear()
-        # self.signals_opened.window_opened.emit()
         usb = f_find_ports()
         self.ui.comboBox_ports.addItems([port.device for port in usb])
 
 
 class UpdatePorts(QWidget):
-    update_list_signal= Signal()
-
+    update_list_signal = Signal()
     def update_comboBox(self):
         self.update_list_signal.emit()
 
-    # обновляет список портов, при изменнии порта
 
 
 

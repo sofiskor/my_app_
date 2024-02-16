@@ -15,10 +15,6 @@ class Signals(QObject):
     sent_to_port_in_progress = Signal(int, int)
 
 
-class SignalOpenWindow(QObject):
-    window_opened = Signal(bool)
-
-
 class Proga(QMainWindow):
     cancel_send_flag = False
 
@@ -72,9 +68,8 @@ class Proga(QMainWindow):
         # print('JSON data has been converted to Excel')
 
     # показывает окно "настройка порта"
-    def change_port_settings(self, open_signal):
+    def change_port_settings(self):
         self.portWindow.show()
-        open_signal = True
         self.hide()
 
     # отправляет файл при нажатии кнопки "загрузить"
@@ -117,7 +112,8 @@ class Proga(QMainWindow):
             worker = Worker(self.send_to_port, configr, ser, file_path, chosen_port)
             self.threadpool.start(worker)
         except serial.SerialException as se:
-            print("Serial port error:", str(se))
+            print(f"Serial port error: {str(se)}")
+            self.ui.comments.addItem(f"Serial port error: {str(se)}")
         except KeyboardInterrupt:
             pass
 
