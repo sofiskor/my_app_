@@ -4,14 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="81db9717-0775-44d1-9d2a-ad802b443be3" name="Changes" comment="добавлен функционал в кнопку &quot;отмена&quot;">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/ui_main.ui" beforeDir="false" afterPath="$PROJECT_DIR$/ui/ui_main.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/ui_port_settings.ui" beforeDir="false" afterPath="$PROJECT_DIR$/ui/ui_port_settings.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/ui_main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui_port_settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/ui_port_settings.py" afterDir="false" />
+    <list default="true" id="81db9717-0775-44d1-9d2a-ad802b443be3" name="Changes" comment="добавлена обработка ошибок во время загрузки файла в порт">
       <change beforePath="$PROJECT_DIR$/windows/mainWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/windows/mainWindow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/windows/port.py" beforeDir="false" afterPath="$PROJECT_DIR$/windows/port.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,15 +31,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;Python.setup.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.main.executor": "Run",
+    "Python.setup.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\skoro\PycharmProjects\practika\my_app_" />
@@ -183,7 +178,23 @@
       <option name="project" value="LOCAL" />
       <updated>1707733493269</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="\">
+      <option name="closed" value="true" />
+      <created>1708005638044</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1708005638044</updated>
+    </task>
+    <task id="LOCAL-00010" summary="добавлена обработка ошибок во время загрузки файла в порт">
+      <option name="closed" value="true" />
+      <created>1708005658132</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1708005658132</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -205,6 +216,8 @@
     <MESSAGE value="исправлены комбобоксы" />
     <MESSAGE value="/" />
     <MESSAGE value="добавлен функционал в кнопку &quot;отмена&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="добавлен функционал в кнопку &quot;отмена&quot;" />
+    <MESSAGE value="\" />
+    <MESSAGE value="добавлена обработка ошибок во время загрузки файла в порт" />
+    <option name="LAST_COMMIT_MESSAGE" value="добавлена обработка ошибок во время загрузки файла в порт" />
   </component>
 </project>

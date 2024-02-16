@@ -118,17 +118,16 @@ class Proga(QMainWindow):
 
         while not self.cancel_send_flag and bytes_sent < total_bytes:
             bytes_to_send = min(100, total_bytes - bytes_sent)  # Определяем количество байт для отправки
+            # запись файла в порт
             try:
                 sent = ser.write(configr[bytes_sent:bytes_sent + bytes_to_send])  # Отправляем данные
                 bytes_sent += sent  # Обновляем счетчик переданных байт
                 self.signals.sent_to_port_in_progress.emit(bytes_sent, total_bytes)
             except serial.SerialException as exc:
                 print(f"Произошла ошибка при работе с портом: {exc}")
-                if ser.is_open:
-                    ser.close()
-                    print("Serial connection closed.")
                 self.progressWindow.hide()
                 break
+        # закрывает порт
         self.signals.sent_to_port_finished.emit(file_path, choosen_port, bytes_sent, total_bytes, ser)
 
 
