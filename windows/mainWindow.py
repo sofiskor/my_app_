@@ -1,11 +1,9 @@
 import os
 
 import serial
-import logging
 from PySide6 import QtWidgets
 from PySide6.QtCore import QObject, Signal, QThreadPool, QRunnable, Slot
 from PySide6.QtWidgets import QMainWindow
-from serial.serialutil import SerialTimeoutException, PortNotOpenError
 
 from .progress import ProgressWindow
 from .port import PortWindow
@@ -89,12 +87,14 @@ class Proga(QMainWindow):
         chosen_parity = self.portWindow.PARITY.get(chosen_parity_rus)  # выбранная четность
         chosen_stopbits_rus = self.portWindow.ui.stop_bits.currentText()
         chosen_stopbits = self.portWindow.STOPBITS.get(chosen_stopbits_rus)  # выбранный стопбит
+        chosen_bytesize_rus = self.portWindow.ui.stop_bits.currentText()
+        chosen_bytesize = self.portWindow.STOPBITS.get(chosen_stopbits_rus)  # выбранный стопбит
         chosen_flowcontrol = self.portWindow.ui.flow_control.currentText()
         # определенние контроля порта
-        if chosen_flowcontrol == "Аппаратное":
+        if chosen_flowcontrol == "RTS/CTS":
             ch_xonooff = False
             ch_rtscts = True
-        elif chosen_flowcontrol == "Программное":
+        elif chosen_flowcontrol == "Xon/Xoff":
             ch_xonooff = True
             ch_rtscts = False
         else:
@@ -102,7 +102,8 @@ class Proga(QMainWindow):
             ch_rtscts = False
         # открытие порта
         try:
-            ser = serial.Serial(port=chosen_port, baudrate=chosen_speed, parity=chosen_parity, stopbits=chosen_stopbits,
+            ser = serial.Serial(port=chosen_port, baudrate=chosen_speed, bytesize = chosen_bytesize,
+                                parity=chosen_parity, stopbits=chosen_stopbits,
                                 timeout=4.0, xonxoff=ch_xonooff, rtscts=ch_rtscts)
 
             worker = Worker(self.send_to_port, configr, ser, file_path, chosen_port)

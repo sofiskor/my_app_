@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>275</width>
-    <height>330</height>
+    <height>408</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Настройка порта</string>
+   <string>Port setting</string>
   </property>
   <widget class="QFrame" name="frame_6">
    <property name="geometry">
@@ -19,7 +19,7 @@
      <x>-10</x>
      <y>0</y>
      <width>291</width>
-     <height>281</height>
+     <height>361</height>
     </rect>
    </property>
    <property name="minimumSize">
@@ -47,7 +47,7 @@
        <item>
         <widget class="QLabel" name="label_comboBox_ports">
          <property name="text">
-          <string>Выбрать порт:</string>
+          <string>Name</string>
          </property>
         </widget>
        </item>
@@ -73,7 +73,7 @@
        <item>
         <widget class="QLabel" name="label_send_5">
          <property name="text">
-          <string>Бит в секунду:</string>
+          <string>Bаudrate</string>
          </property>
         </widget>
        </item>
@@ -82,6 +82,32 @@
          <property name="enabled">
           <bool>true</bool>
          </property>
+         <property name="whatsThis">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Отображаются только доступные порты&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QFrame" name="frame_9">
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_8">
+       <item>
+        <widget class="QLabel" name="label_data_size">
+         <property name="text">
+          <string>Data size</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="data_size">
          <property name="whatsThis">
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Отображаются только доступные порты&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
@@ -102,7 +128,7 @@
        <item>
         <widget class="QLabel" name="label_parity_check">
          <property name="text">
-          <string>Четность:</string>
+          <string>Parity</string>
          </property>
         </widget>
        </item>
@@ -140,7 +166,7 @@
        <item>
         <widget class="QLabel" name="label_stop_bits">
          <property name="text">
-          <string>Стоповые:</string>
+          <string>Stopbits</string>
          </property>
         </widget>
        </item>
@@ -166,7 +192,7 @@
        <item>
         <widget class="QLabel" name="label_flow_control">
          <property name="text">
-          <string>Управление потоком:</string>
+          <string>Handshake</string>
          </property>
         </widget>
        </item>
@@ -177,17 +203,17 @@
          </property>
          <item>
           <property name="text">
-           <string>Нет</string>
+           <string>OFF</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>Аппаратное</string>
+           <string>RTS/CTS</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>Программное </string>
+           <string>Xon/Xoff</string>
           </property>
          </item>
         </widget>
@@ -233,8 +259,8 @@
   <widget class="QPushButton" name="backButton">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>280</y>
+     <x>10</x>
+     <y>360</y>
      <width>75</width>
      <height>24</height>
     </rect>

@@ -16,11 +16,11 @@ def f_find_ports():
 
 class PortWindow(QWidget):
     PARITY = {
-        "нет": serial.PARITY_NONE,
-        "чет": serial.PARITY_EVEN,
-        "нечет": serial.PARITY_ODD,
-        "маркер": serial.PARITY_MARK,
-        "пробел": serial.PARITY_SPACE
+        "none": serial.PARITY_NONE,
+        "even": serial.PARITY_EVEN,
+        "odd": serial.PARITY_ODD,
+        "mark": serial.PARITY_MARK,
+        "space": serial.PARITY_SPACE
     }
 
     STOPBITS = {
@@ -30,6 +30,12 @@ class PortWindow(QWidget):
     }
     SPEED = ["1200", "1800", "2400", "4800", "9600", "19200", "38400", "57600", "115200"]
 
+    BYTESIZE = {
+        "5": serial.FIVEBITS,
+        "6": serial.SIXBITS,
+        "7": serial.SEVENBITS,
+        "8": serial.EIGHTBITS
+    }
 
     def __init__(self):
         super(PortWindow, self).__init__()
@@ -40,13 +46,19 @@ class PortWindow(QWidget):
         self.ui.comboBox_ports.addItems([port.device for port in usb])
         self.ui.speed_bod.addItems(self.SPEED)
         self.ui.parity_check.addItems(self.PARITY.keys())
+        self.ui.data_size.addItems(self.BYTESIZE.keys())
         self.ui.stop_bits.addItems(self.STOPBITS.keys())
 
         self.ui.but_default.clicked.connect(self.default_settings)
 
-    def default_settings(self):
-        self.ui.comboBox_ports.setCurrentIndex(1)
+        # port settings current
         self.ui.speed_bod.setCurrentIndex(4)
+        self.ui.data_size.setCurrentIndex(3)
+
+
+    def default_settings(self):
+        self.ui.speed_bod.setCurrentIndex(4)
+        self.ui.data_size.setCurrentIndex(3)
         self.ui.parity_check.setCurrentIndex(0)
         self.ui.stop_bits.setCurrentIndex(0)
         self.ui.flow_control.setCurrentIndex(0)

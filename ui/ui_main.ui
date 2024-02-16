@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>260</width>
-    <height>330</height>
+    <height>398</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -35,7 +35,7 @@
       <x>10</x>
       <y>0</y>
       <width>241</width>
-      <height>321</height>
+      <height>381</height>
      </rect>
     </property>
     <property name="frameShape">

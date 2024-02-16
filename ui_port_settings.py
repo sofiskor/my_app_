@@ -23,10 +23,10 @@ class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(275, 330)
+        Dialog.resize(275, 408)
         self.frame_6 = QFrame(Dialog)
         self.frame_6.setObjectName(u"frame_6")
-        self.frame_6.setGeometry(QRect(-10, 0, 291, 281))
+        self.frame_6.setGeometry(QRect(-10, 0, 291, 361))
         self.frame_6.setMinimumSize(QSize(241, 230))
         self.frame_6.setFrameShape(QFrame.StyledPanel)
         self.frame_6.setFrameShadow(QFrame.Raised)
@@ -70,6 +70,25 @@ class Ui_Dialog(object):
 
 
         self.verticalLayout_2.addWidget(self.frame_4)
+
+        self.frame_9 = QFrame(self.frame_6)
+        self.frame_9.setObjectName(u"frame_9")
+        self.frame_9.setFrameShape(QFrame.StyledPanel)
+        self.frame_9.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_8 = QHBoxLayout(self.frame_9)
+        self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
+        self.label_data_size = QLabel(self.frame_9)
+        self.label_data_size.setObjectName(u"label_data_size")
+
+        self.horizontalLayout_8.addWidget(self.label_data_size)
+
+        self.data_size = QComboBox(self.frame_9)
+        self.data_size.setObjectName(u"data_size")
+
+        self.horizontalLayout_8.addWidget(self.data_size)
+
+
+        self.verticalLayout_2.addWidget(self.frame_9)
 
         self.frame_5 = QFrame(self.frame_6)
         self.frame_5.setObjectName(u"frame_5")
@@ -157,7 +176,7 @@ class Ui_Dialog(object):
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.backButton = QPushButton(Dialog)
         self.backButton.setObjectName(u"backButton")
-        self.backButton.setGeometry(QRect(20, 280, 75, 24))
+        self.backButton.setGeometry(QRect(10, 360, 75, 24))
 
         self.retranslateUi(Dialog)
 
@@ -165,27 +184,31 @@ class Ui_Dialog(object):
     # setupUi
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0430 \u043f\u043e\u0440\u0442\u0430", None))
-        self.label_comboBox_ports.setText(QCoreApplication.translate("Dialog", u"\u0412\u044b\u0431\u0440\u0430\u0442\u044c \u043f\u043e\u0440\u0442:", None))
+        Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Port setting", None))
+        self.label_comboBox_ports.setText(QCoreApplication.translate("Dialog", u"Name", None))
 #if QT_CONFIG(whatsthis)
         self.comboBox_ports.setWhatsThis(QCoreApplication.translate("Dialog", u"<html><head/><body><p>\u041e\u0442\u043e\u0431\u0440\u0430\u0436\u0430\u044e\u0442\u0441\u044f \u0442\u043e\u043b\u044c\u043a\u043e \u0434\u043e\u0441\u0442\u0443\u043f\u043d\u044b\u0435 \u043f\u043e\u0440\u0442\u044b</p><p><br/></p></body></html>", None))
 #endif // QT_CONFIG(whatsthis)
-        self.label_send_5.setText(QCoreApplication.translate("Dialog", u"\u0411\u0438\u0442 \u0432 \u0441\u0435\u043a\u0443\u043d\u0434\u0443:", None))
+        self.label_send_5.setText(QCoreApplication.translate("Dialog", u"B\u0430udrate", None))
 #if QT_CONFIG(whatsthis)
         self.speed_bod.setWhatsThis(QCoreApplication.translate("Dialog", u"<html><head/><body><p>\u041e\u0442\u043e\u0431\u0440\u0430\u0436\u0430\u044e\u0442\u0441\u044f \u0442\u043e\u043b\u044c\u043a\u043e \u0434\u043e\u0441\u0442\u0443\u043f\u043d\u044b\u0435 \u043f\u043e\u0440\u0442\u044b</p><p><br/></p></body></html>", None))
 #endif // QT_CONFIG(whatsthis)
-        self.label_parity_check.setText(QCoreApplication.translate("Dialog", u"\u0427\u0435\u0442\u043d\u043e\u0441\u0442\u044c:", None))
+        self.label_data_size.setText(QCoreApplication.translate("Dialog", u"Data size", None))
+#if QT_CONFIG(whatsthis)
+        self.data_size.setWhatsThis(QCoreApplication.translate("Dialog", u"<html><head/><body><p>\u041e\u0442\u043e\u0431\u0440\u0430\u0436\u0430\u044e\u0442\u0441\u044f \u0442\u043e\u043b\u044c\u043a\u043e \u0434\u043e\u0441\u0442\u0443\u043f\u043d\u044b\u0435 \u043f\u043e\u0440\u0442\u044b</p><p><br/></p></body></html>", None))
+#endif // QT_CONFIG(whatsthis)
+        self.label_parity_check.setText(QCoreApplication.translate("Dialog", u"Parity", None))
 #if QT_CONFIG(whatsthis)
         self.parity_check.setWhatsThis(QCoreApplication.translate("Dialog", u"<html><head/><body><p>\u041e\u0442\u043e\u0431\u0440\u0430\u0436\u0430\u044e\u0442\u0441\u044f \u0442\u043e\u043b\u044c\u043a\u043e \u0434\u043e\u0441\u0442\u0443\u043f\u043d\u044b\u0435 \u043f\u043e\u0440\u0442\u044b</p><p><br/></p></body></html>", None))
 #endif // QT_CONFIG(whatsthis)
-        self.label_stop_bits.setText(QCoreApplication.translate("Dialog", u"\u0421\u0442\u043e\u043f\u043e\u0432\u044b\u0435:", None))
+        self.label_stop_bits.setText(QCoreApplication.translate("Dialog", u"Stopbits", None))
 #if QT_CONFIG(whatsthis)
         self.stop_bits.setWhatsThis(QCoreApplication.translate("Dialog", u"<html><head/><body><p>\u041e\u0442\u043e\u0431\u0440\u0430\u0436\u0430\u044e\u0442\u0441\u044f \u0442\u043e\u043b\u044c\u043a\u043e \u0434\u043e\u0441\u0442\u0443\u043f\u043d\u044b\u0435 \u043f\u043e\u0440\u0442\u044b</p><p><br/></p></body></html>", None))
 #endif // QT_CONFIG(whatsthis)
-        self.label_flow_control.setText(QCoreApplication.translate("Dialog", u"\u0423\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u0435 \u043f\u043e\u0442\u043e\u043a\u043e\u043c:", None))
-        self.flow_control.setItemText(0, QCoreApplication.translate("Dialog", u"\u041d\u0435\u0442", None))
-        self.flow_control.setItemText(1, QCoreApplication.translate("Dialog", u"\u0410\u043f\u043f\u0430\u0440\u0430\u0442\u043d\u043e\u0435", None))
-        self.flow_control.setItemText(2, QCoreApplication.translate("Dialog", u"\u041f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u043d\u043e\u0435 ", None))
+        self.label_flow_control.setText(QCoreApplication.translate("Dialog", u"Handshake", None))
+        self.flow_control.setItemText(0, QCoreApplication.translate("Dialog", u"OFF", None))
+        self.flow_control.setItemText(1, QCoreApplication.translate("Dialog", u"RTS/CTS", None))
+        self.flow_control.setItemText(2, QCoreApplication.translate("Dialog", u"Xon/Xoff", None))
 
 #if QT_CONFIG(whatsthis)
         self.flow_control.setWhatsThis(QCoreApplication.translate("Dialog", u"<html><head/><body><p>\u041e\u0442\u043e\u0431\u0440\u0430\u0436\u0430\u044e\u0442\u0441\u044f \u0442\u043e\u043b\u044c\u043a\u043e \u0434\u043e\u0441\u0442\u0443\u043f\u043d\u044b\u0435 \u043f\u043e\u0440\u0442\u044b</p><p><br/></p></body></html>", None))
