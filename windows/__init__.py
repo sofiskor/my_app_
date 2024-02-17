@@ -1,8 +1,8 @@
 from .port import PortWindow
 from .progress import ProgressWindow
-from .mainWindow import Proga
+from .mainWindow import MainWindow
 
 
-main_window = Proga()
+main_window = MainWindow()
 progress_window = ProgressWindow()
 port_window = PortWindow()

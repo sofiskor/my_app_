@@ -55,8 +55,8 @@ class Ui_progressWindow(object):
     # setupUi
 
     def retranslateUi(self, progressWindow):
-        progressWindow.setWindowTitle(QCoreApplication.translate("progressWindow", u"\u0417\u0430\u0433\u0440\u0443\u0437\u043a\u0430", None))
-        self.stopButton.setText(QCoreApplication.translate("progressWindow", u"\u041e\u0442\u043c\u0435\u043d\u0430", None))
-        self.label.setText(QCoreApplication.translate("progressWindow", u"\u0417\u0430\u0433\u0440\u0443\u0437\u043a\u0430 \u0444\u0430\u0439\u043b\u0430", None))
+        progressWindow.setWindowTitle(QCoreApplication.translate("progressWindow", u"Progress", None))
+        self.stopButton.setText(QCoreApplication.translate("progressWindow", u"Cancel", None))
+        self.label.setText(QCoreApplication.translate("progressWindow", u"Downloading file", None))
     # retranslateUi
 

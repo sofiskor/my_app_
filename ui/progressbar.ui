@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Загрузка</string>
+   <string>Progress</string>
   </property>
   <widget class="QPushButton" name="stopButton">
    <property name="geometry">
@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Отмена</string>
+    <string>Cancel</string>
    </property>
   </widget>
   <widget class="QFrame" name="frame">
@@ -48,7 +48,7 @@
        <enum>Qt::RightToLeft</enum>
       </property>
       <property name="text">
-       <string>Загрузка файла</string>
+       <string>Downloading file</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>

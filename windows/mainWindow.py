@@ -15,35 +15,35 @@ class Signals(QObject):
     sent_to_port_in_progress = Signal(int, int)
 
 
-class Proga(QMainWindow):
+class MainWindow(QMainWindow):
     cancel_send_flag = False
 
     def __init__(self):
         # Инициализация родительского класса
-        super(Proga, self).__init__()
+        super(MainWindow, self).__init__()
 
         self.ui = Ui_mainWindow()
         self.ui.setupUi(self)
-        self.ui.Button_download.clicked.connect(self.f_json_to_excel)  # кнопка открытия файла и преобр в эксель
-        # self.comboBox_ports.addItems([port.device for port in usb])  # добавление портов в список
-        self.progressWindow = ProgressWindow()
-        self.ui.Button_send.clicked.connect(self.send_file)
-        self.progressWindow.ui.stopButton.clicked.connect(self.stop_sending)
+
+        self.ui.Button_download.clicked.connect(self.f_json_to_excel)  # кнопка скачивания\\ не доделана
+
+        # загрузка прошивки
+        self.ui.Button_send.clicked.connect(self.send_file)  # кнопка отправки файла на мк
+        self.progressWindow = ProgressWindow()  # окно с индикатором процессом
+        self.progressWindow.ui.stopButton.clicked.connect(self.stop_sending)  # отмена загрузки файла
         self.threadpool = QThreadPool()
         self.signals = Signals()
-        self.signals.sent_to_port_finished.connect(self.sending_finished)
-        self.signals.sent_to_port_in_progress.connect(self.print_sent_bytes)
+        self.signals.sent_to_port_in_progress.connect(self.print_sent_bytes)  # отображение % загрузки
+        self.signals.sent_to_port_finished.connect(self.sending_finished)  # конец отправки файла
 
-        self.ui.But_settings_ports.clicked.connect(self.hide)
-        self.portWindow = PortWindow()
-        self.ui.But_settings_ports.clicked.connect(self.change_port_settings)
+        # настройка порта
+        self.ui.But_settings_ports.clicked.connect(self.hide)  # скрытие главного окна
+        self.portWindow = PortWindow()  # окно с настройкой порта
+        self.ui.But_settings_ports.clicked.connect(self.change_port_settings)  # открытие окна "настройка порта"
         self.updatePorts = UpdatePorts()
-        self.updatePorts.update_list_signal.connect(self.portWindow.update_comboBox)
+        self.updatePorts.update_list_signal.connect(self.portWindow.update_comboBox)  # обновление списка портов
         self.ui.But_settings_ports.clicked.connect(self.updatePorts.update_list_signal)
-        # self.ui.But_settings_ports.clicked.connect(port_window.update_comboBox)
-        self.portWindow.ui.backButton.clicked.connect(self.show)
-
-        # открытие файла и преобразование его в эксель
+        self.portWindow.ui.backButton.clicked.connect(self.show)  # возврат в главное меню
 
     def f_json_to_excel(self):
         print('hi')
@@ -67,15 +67,15 @@ class Proga(QMainWindow):
         # df.to_excel('data.xlsx', index=False)
         # print('JSON data has been converted to Excel')
 
-    # показывает окно "настройка порта"
+    # окно "настройка порта"
     def change_port_settings(self):
         self.portWindow.show()
         self.hide()
 
-    # отправляет файл при нажатии кнопки "загрузить"
+    # отправка файл при нажатии кнопки "загрузить"
     def send_file(self):
         self.cancel_send_flag = False
-        # открываем файл с прошивкой
+        # открытие файл с прошивкой
         with open(QtWidgets.QFileDialog.getOpenFileName(
                 None,
                 'Open File', './',
@@ -111,12 +111,14 @@ class Proga(QMainWindow):
 
             worker = Worker(self.send_to_port, configr, ser, file_path, chosen_port)
             self.threadpool.start(worker)
+        # прописывание исключений
         except serial.SerialException as se:
             print(f"Serial port error: {str(se)}")
             self.ui.comments.addItem(f"Serial port error: {str(se)}")
         except KeyboardInterrupt:
             pass
 
+    # функция записи файла в мк
     def send_to_port(self, configr, ser, file_path, choosen_port):
         total_bytes = len(configr)  # Общее количество байт в файле
         bytes_sent = 0  # Инициализируем счетчик переданных байт
@@ -136,14 +138,19 @@ class Proga(QMainWindow):
         # закрывает порт
         self.signals.sent_to_port_finished.emit(file_path, choosen_port, bytes_sent, total_bytes, ser)
 
+    # отсновка отправки файла
     def stop_sending(self):
         self.cancel_send_flag = True
+        print("Interrupted by the user")
+        self.ui.comments.addItem("Interrupted by the user")
 
+    # отображение процесса отправленных бит
     def print_sent_bytes(self, sent, total):
         print(f"Отправлено {sent} из {total} байт")
         self.progressWindow.show()
         self.progressWindow.ui.progress.setValue(sent / total * 100)
 
+    # конец отправки файла
     def sending_finished(self, file_path, chosen_port, bytes_sent, total_bytes, ser):
         if bytes_sent == total_bytes:
             print(f"File {file_path} sent to COM port {chosen_port} successfully.")

@@ -236,7 +236,7 @@
        <item>
         <widget class="QPushButton" name="but_default">
          <property name="text">
-          <string>Восстановить значения по умолчанию</string>
+          <string>Restore Default Settings</string>
          </property>
         </widget>
        </item>
@@ -266,7 +266,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Назад</string>
+    <string>Back</string>
    </property>
   </widget>
  </widget>
